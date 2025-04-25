@@ -1,8 +1,13 @@
 import { Request, Response } from 'express';
 import * as ContentService from '../services/content.service';
+import { AuthenticatedRequest } from '../middleware/auth.middleware';
 
-export const create = async (req: Request, res: Response) => {
-  const content = await ContentService.createContent(req.body);
+export const create = async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user?.userId;
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
+  const content = await ContentService.createContent(req.body, userId);
   res.status(201).json(content);
 };
 

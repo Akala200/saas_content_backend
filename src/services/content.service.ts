@@ -2,8 +2,8 @@
 // src/services/content.service.ts
 import { Content, IContent } from '../models/content.model';
 
-export const createContent = async (data: Partial<IContent>) => {
-  return await Content.create(data);
+export const createContent = async (data: Partial<IContent>, userId: string) => {
+  return await Content.create({ ...data, createdBy: userId });
 };
 
 export const getAllContent = async () => {
